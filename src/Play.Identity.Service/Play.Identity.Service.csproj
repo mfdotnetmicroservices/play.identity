@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Play.Identity.Contracts\Play.Identity.Contracts.csproj" />
+    <PackageReference Include="Play.Identity.Contracts" Version="1.0.2" />
   </ItemGroup>
 
 </Project>
