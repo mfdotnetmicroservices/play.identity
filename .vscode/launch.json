@@ -24,7 +24,7 @@
             "processId": "${command:pickProcess}"
         },
         {
-            "name": "Containers: .NET Launch",
+            "name": "Docker: .NET Launch",
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
