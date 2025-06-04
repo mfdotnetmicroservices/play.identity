@@ -52,3 +52,24 @@ export GH_PAT="[PAT HERE]"
 docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.identity:$version .
 
 ```
+
+
+
+
+## Run the docker image
+### windows (powershell)
+```powershell
+$adminPass="[PASSWORD HERE]"
+docker run -it --rm -p 5002:5002 --name identity -e MongoDbSettings__Host=mongo -e RabbitMQSettings__Host=rabbitmq -e IdentitySettings__AdminUserPassword=$adminPass --network playinfra_default play.identity:$version  
+```
+
+
+
+## Run the docker image
+### macOS (bash)
+```bash
+
+adminPass="[PASSWORD HERE]"
+docker run -it --rm -p 5002:5002 --name identity -e MongoDbSettings__Host=mongo -e RabbitMQSettings__Host=rabbitmq -e IdentitySettings__AdminUserPassword=$adminPass --network playinfra_default play.identity:$version
+
+```
