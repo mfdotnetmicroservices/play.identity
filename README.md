@@ -33,3 +33,22 @@ dotnet pack src/Play.Identity.Contracts/ --configuration Release -p:PackageVersi
 dotnet nuget push ../packages/Play.Identity.Contracts.${version}.nupkg --api-key ${gh_pat} --source "github"
 
 ```
+
+
+## Build the docker image
+### windows (powershell)
+```powershell
+
+$env:GH_OWNER="mfdotnetmicroservices"
+$env:GH_PAT="[PAT HERE]"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.identity:$version .
+```
+
+### macOS (bash)
+```bash
+
+export GH_OWNER="mfdotnetmicroservices"
+export GH_PAT="[PAT HERE]"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.identity:$version .
+
+```
