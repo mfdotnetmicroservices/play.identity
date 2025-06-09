@@ -41,7 +41,8 @@ dotnet nuget push ../packages/Play.Identity.Contracts.${version}.nupkg --api-key
 
 $env:GH_OWNER="mfdotnetmicroservices"
 $env:GH_PAT="[PAT HERE]"
-docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.identity:$version .
+$acrname="playeconomyacr"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t "$acrname.azurecr.io/play.identity:$version" .
 ```
 
 ### macOS (bash)
@@ -49,7 +50,8 @@ docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.identity:$version .
 
 export GH_OWNER="mfdotnetmicroservices"
 export GH_PAT="[PAT HERE]"
-docker build --secret id=GH_OWNER --secret id=GH_PAT -t play.identity:$version .
+acrname="playeconomyacr"
+docker build --secret id=GH_OWNER --secret id=GH_PAT -t "$acrname.azurecr.io/play.identity:$version" .
 
 ```
 
@@ -76,4 +78,21 @@ cosmosDbConnString="[CONN STRING HERE]"
 serviceBusConnString="[CONN STRING HERE]"
 docker run -it --rm -p 5002:5002 --name identity -e MongoDbSettings__ConnectionString=$cosmosDbConnString -e ServiceBusSettings__ConnectionString=$serviceBusConnString -e ServiceSettings__MessageBroker="SERVICEBUS" -e IdentitySettings__AdminUserPassword=$adminPass play.identity:$version  
 
+```
+
+
+## Publishing the Docker image
+### For PC
+```powershell
+
+$acrname="playeconomyacr"
+az acr login --name $acrname
+docker push "$acrname.azurecr.io/play.identity:$version"
+```
+
+### For MacOS
+
+```bash
+az acr login --name "$acrname"
+docker push "$acrname.azurecr.io/play.identity:$version"
 ```
