@@ -142,3 +142,4 @@ kubectl apply -f .\kubernetes\identity.yaml -n $namespace
 
 kubectl apply -f ./kubernetes/identity.yaml -n $namespace
 ```
+
