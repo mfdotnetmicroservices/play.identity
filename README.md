@@ -96,3 +96,36 @@ docker push "$acrname.azurecr.io/play.identity:$version"
 az acr login --name "$acrname"
 docker push "$acrname.azurecr.io/play.identity:$version"
 ```
+
+## Create the kubernetes namespace
+### For windows
+```powershell
+$namespace="identity"
+kubectl create namespace $namespace 
+```
+
+### For Mac
+```bash
+namespace="identity"
+kubectl create namespace "$namespace" 
+```
+
+## Create the Kubernetes secrets
+### For windows
+```powershell
+$cosmosDbConnString="[CONN STRING HERE]"
+$serviceBusConnString="[CONN STRING HERE]"
+$adminPass="[PASSWORD HERE]"
+$namespace="identity"
+kubectl create secret generic identity-secrets --from-literal=cosmosdb-connectionstring=$cosmosDbConnString --from-literal=servicebus-connectionstring=$serviceBusConnString --from-literal=admin-password=$adminPass -n $namespace
+```
+
+### For mac
+```bash
+cosmosDbConnString="[CONN STRING HERE]"
+serviceBusConnString="[CONN STRING HERE]"
+adminPass="[PASSWORD HERE]"
+namespace="identity"
+
+kubectl create secret generic identity-secrets --from-literal=cosmosdb-connectionstring="$cosmosDbConnString" --from-literal=servicebus-connectionstring="$serviceBusConnString" --from-literal=admin-password="$adminPass" -n "$namespace"
+```
