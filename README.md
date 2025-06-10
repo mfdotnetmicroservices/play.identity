@@ -7,7 +7,7 @@ Play Economy Identity microservice
 ### For Windows (PowerShell): 
 
 ```powershell 
-$version="1.0.5"
+$version="1.0.6"
 $owner="mfdotnetmicroservices"
 $gh_pat="[PAT HERE]"
 
@@ -23,7 +23,7 @@ dotnet nuget push ..\packages\Play.Identity.Contracts.$version.nupkg --api-key $
 ### For macOS
 ```bash
 
-version="1.0.5"
+version="1.0.6"
 owner="mfdotnetmicroservices"
 gh_pat="[PAT HERE]"
 
@@ -93,6 +93,7 @@ docker push "$acrname.azurecr.io/play.identity:$version"
 ### For MacOS
 
 ```bash
+acrname="playeconomyacr"
 az acr login --name "$acrname"
 docker push "$acrname.azurecr.io/play.identity:$version"
 ```
