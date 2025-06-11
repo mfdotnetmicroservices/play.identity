@@ -144,3 +144,49 @@ kubectl apply -f .\kubernetes\identity.yaml -n $namespace
 kubectl apply -f ./kubernetes/identity.yaml -n $namespace
 ```
 
+## Creating the Azure Managed Identity and granting it access to Key Vault secrets
+### Windows
+```powershell
+$appnameRg="playeconomy"
+$namespace="identity"
+$appnamekv="playeconomy-key-vault"
+az identity create --resource-group $appnameRg --name $namespace
+$IDENTITY_CLIENT_ID=az identity show -g $appnameRg -n $namespace --query clientId -otsv
+az keyvault set-policy -n $appnamekv --secret-permissions get list --spn $IDENTITY_CLIENT_ID
+```
+ 
+ ### Mac
+```bash
+#!/bin/bash
+appnameRg="playeconomy"
+namespace="identity"
+appnamekv="playeconomy-key-vault"
+
+az identity create --resource-group "$appnameRg" --name "$namespace"
+IDENTITY_CLIENT_ID=$(az identity show -g "$appnameRg" -n "$namespace" --query clientId -o tsv)
+IDENTITY_PRINCIPAL_ID=$(az identity show -g "$appnameRg" -n "$namespace" --query principalId -o tsv)
+# Assign the Key Vault Secrets User role to the managed identity for the Key Vault
+az role assignment create --role "Key Vault Secrets User" \
+  --assignee "$IDENTITY_PRINCIPAL_ID" \
+  --scope "/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$appnameRg/providers/Microsoft.KeyVault/vaults/$appnamekv"
+az keyvault set-policy -n "$appnamekv" --secret-permissions get list --spn "$IDENTITY_CLIENT_ID"
+```
+
+## Establish the federated identity credential
+```powershell 
+
+
+```
+
+## For mac
+```bash
+namespace="identity"
+appnamecluster="playeconomy_cluster"
+appnameRg="playeconomy"
+
+
+export AKS_OIDC_ISSUER="$(az aks show --name "${appnamecluster}" --resource-group "${appnameRg}" --query "oidcIssuerProfile.issuerUrl" --output tsv)"
+
+
+az identity federated-credential create --name ${namespace} --identity-name "${namespace}" --resource-group "${appnameRg}" --issuer "${AKS_OIDC_ISSUER}" --subject system:serviceaccount:"${namespace}":"${namespace}-serviceaccount" --audience api://AzureADTokenExchange 
+```
