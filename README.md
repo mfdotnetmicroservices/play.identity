@@ -7,7 +7,7 @@ Play Economy Identity microservice
 ### For Windows (PowerShell): 
 
 ```powershell 
-$version="1.0.7"
+$version="1.0.8"
 $owner="mfdotnetmicroservices"
 $gh_pat="[PAT HERE]"
 
@@ -23,7 +23,7 @@ dotnet nuget push ..\packages\Play.Identity.Contracts.$version.nupkg --api-key $
 ### For macOS
 ```bash
 
-version="1.0.7"
+version="1.0.8"
 owner="mfdotnetmicroservices"
 gh_pat="[PAT HERE]"
 
@@ -123,6 +123,15 @@ kubectl apply -f .\kubernetes\identity.yaml -n $namespace
 kubectl apply -f ./kubernetes/identity.yaml -n $namespace
 ```
 
+## Assign the Key Vault Secrets User role to the managed identity for the Key Vault (**If not already done!**)
+```bash 
+
+az role assignment create --role "Key Vault Secrets User" \
+  --assignee "$IDENTITY_PRINCIPAL_ID" \
+  --scope "/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$appnameRg/providers/Microsoft.KeyVault/vaults/$appnamekv"
+```
+
+
 ## Creating the Azure Managed Identity and granting it access to Key Vault secrets
 ### Windows
 ```powershell
@@ -144,10 +153,6 @@ appnamekv="playeconomy-key-vault"
 az identity create --resource-group "$appnameRg" --name "$namespace"
 IDENTITY_CLIENT_ID=$(az identity show -g "$appnameRg" -n "$namespace" --query clientId -o tsv)
 IDENTITY_PRINCIPAL_ID=$(az identity show -g "$appnameRg" -n "$namespace" --query principalId -o tsv)
-# Assign the Key Vault Secrets User role to the managed identity for the Key Vault
-az role assignment create --role "Key Vault Secrets User" \
-  --assignee "$IDENTITY_PRINCIPAL_ID" \
-  --scope "/subscriptions/$(az account show --query id -o tsv)/resourceGroups/$appnameRg/providers/Microsoft.KeyVault/vaults/$appnamekv"
 az keyvault set-policy -n "$appnamekv" --secret-permissions get list --spn "$IDENTITY_CLIENT_ID"
 ```
 
