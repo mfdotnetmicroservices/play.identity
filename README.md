@@ -7,7 +7,7 @@ Play Economy Identity microservice
 ### For Windows (PowerShell): 
 
 ```powershell 
-$version="1.0.8"
+$version="1.0.9"
 $owner="mfdotnetmicroservices"
 $gh_pat="[PAT HERE]"
 
@@ -23,7 +23,7 @@ dotnet nuget push ..\packages\Play.Identity.Contracts.$version.nupkg --api-key $
 ### For macOS
 ```bash
 
-version="1.0.8"
+version="1.0.9"
 owner="mfdotnetmicroservices"
 gh_pat="[PAT HERE]"
 
