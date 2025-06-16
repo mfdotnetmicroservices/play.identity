@@ -169,3 +169,9 @@ export AKS_OIDC_ISSUER="$(az aks show --name "${appnamecluster}" --resource-grou
 
 az identity federated-credential create --name ${namespace} --identity-name "${namespace}" --resource-group "${appnameRg}" --issuer "${AKS_OIDC_ISSUER}" --subject system:serviceaccount:"${namespace}":"${namespace}-serviceaccount" --audience api://AzureADTokenExchange 
 ```
+
+## Create the signing certificate
+```bash
+namespace="identity"
+kubectl apply -f ./kubernetes/singning-cer.yaml -n $namespace
+```
