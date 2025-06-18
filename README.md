@@ -111,18 +111,6 @@ namespace="identity"
 kubectl create namespace "$namespace" 
 ```
 
-## Create the Kubernetes pod
-### For windows
-```powershell
-kubectl apply -f .\kubernetes\identity.yaml -n $namespace 
-```
-
-### For mac
-```bash
-
-kubectl apply -f ./kubernetes/identity.yaml -n $namespace
-```
-
 ## Assign the Key Vault Secrets User role to the managed identity for the Key Vault (**If not already done!**)
 ```bash 
 
@@ -170,8 +158,10 @@ export AKS_OIDC_ISSUER="$(az aks show --name "${appnamecluster}" --resource-grou
 az identity federated-credential create --name ${namespace} --identity-name "${namespace}" --resource-group "${appnameRg}" --issuer "${AKS_OIDC_ISSUER}" --subject system:serviceaccount:"${namespace}":"${namespace}-serviceaccount" --audience api://AzureADTokenExchange 
 ```
 
-## Create the signing certificate
+
+## Install the helm chart 
 ```bash
-namespace="identity"
-kubectl apply -f ./kubernetes/singning-cer.yaml -n $namespace
-```
+helm install identity-service ./helm -f ./helm/values.yaml -n "$namespace" 
+``` 
+
+
