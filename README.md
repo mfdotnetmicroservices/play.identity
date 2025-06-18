@@ -3,7 +3,7 @@
 Play Economy Identity microservice
 
 
-# Create and publish Contracts package
+# Create and publish Contracts package (NuGet Package)
 ### For Windows (PowerShell): 
 
 ```powershell 
