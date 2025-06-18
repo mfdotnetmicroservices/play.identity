@@ -161,7 +161,25 @@ az identity federated-credential create --name ${namespace} --identity-name "${n
 
 ## Install the helm chart 
 ```bash
-helm install identity-service ./helm -f ./helm/values.yaml -n "$namespace" 
+namespace="identity"
+appnameAcr="playeconomyacr"
+helmUser="00000000-0000-0000-0000-000000000000"
+helmPassword=$(az acr login --name "$appnameAcr" --expose-token --output tsv --query accessToken)
+
+helm registry login "$appnameAcr.azurecr.io" --username "$helmUser" --password "$helmPassword"
+
+chartVersion="0.1.0"
+helm upgrade identity-service oci://$appnameAcr.azurecr.io/helm/microservice --version $chartVersion -f ./helm/values.yaml -n "$namespace" --install
 ``` 
 
+## Install the helm chart (cont.)
+```bash
+# If its not working you can append a --debug to the command.
+# Ex:
+
+helm upgrade identity-service oci://$appnameAcr.azurecr.io/helm/microservice --version $chartVersion -f ./helm/values.yaml -n "$namespace" --install --debug 
+
+# or if it's still not working try:
+helm repo update
+```
 
