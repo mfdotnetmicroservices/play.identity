@@ -185,3 +185,6 @@ helm repo update
 
 ## Required repository secrets for GitHub workflow
 GH_PAT: Created in GitHub user profile --> Settings --> Developer settings --> Personal access token 
+AZURE_CLIENT_ID: From AAD App Registration
+AZURE_SUBSCRIPTION_ID: From Azure Portal subscription
+AZURE_TENANT_ID: From AAD properties page
