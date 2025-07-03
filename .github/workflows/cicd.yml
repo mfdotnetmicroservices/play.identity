@@ -67,6 +67,7 @@ jobs:
 
     env:
       ACR_NAME: playeconomyacr
+      APP_NAME: playeconomy
       CLUSTER_NAME: playeconomy_cluster
       SERVICE_NAME: identity
       HELM_CHART_VERSION: 0.1.0
@@ -104,7 +105,7 @@ jobs:
         push: true
 
     - name: Get AKS Credentials
-      run: az aks get-credentials --resource-group ${{ env.ACR_NAME }} --name ${{ env.CLUSTER_NAME }}
+      run: az aks get-credentials --resource-group ${{ env.APP_NAME }} --name ${{ env.CLUSTER_NAME }}
 
     - name: Helm tool installer
       uses: Azure/setup-helm@v3
